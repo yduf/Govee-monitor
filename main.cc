@@ -116,6 +116,9 @@ public:
 
     void scan( bool enable = true) {
         if( enable) {
+            if( verbose)
+                cerr << "*** start scan\n";
+
             // Save the current HCI filter (Host Controller Interface)
             struct hci_filter original_filter;
             socklen_t olen = sizeof(original_filter);
@@ -129,6 +132,10 @@ public:
             hci_filter_set_event(EVT_LE_META_EVENT, &new_filter);
             if (setsockopt(socket, SOL_HCI, HCI_FILTER, &new_filter, sizeof(new_filter)) < 0)
                 throw Error( "setsockopt");
+        }
+        else {
+            if( verbose)
+                cerr << "*** stop scan\n";
         }
 
         constexpr auto filter_duplicate = 0x00;
@@ -392,7 +399,8 @@ void load_config( map<string, Govee>& bt_devices ) {
 
 // scan BLE for Govee device and display info
 int main(int argc, char **argv)
-{
+{try {
+
     // read options
     juzzlin::Argengine ae(argc, argv);
     ae.addOption({"-v", "--verbose"}, [&] {
@@ -476,5 +484,6 @@ int main(int argc, char **argv)
                      << "\n";             
         }
     }
-
+} catch(...)    // otherwise abort() is called instead and scan is not disabled
+    {}
 }
