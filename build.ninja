@@ -1,0 +1,11 @@
+builddir = build
+# -fopt-info-vec-missed -fopt-info-vec-all 
+c_flags  = -fdiagnostics-color -std=c++20 -Werror=return-type -g 
+ld_flags = -lbluetooth
+
+rule cc
+    depfile = $out.d
+    command = g++ -MD -MF $out.d $c_flags $in -o $out $ld_flags 2>&1 | tee gcc.log
+
+build build/goveescan : cc main.cc
+

@@ -1,0 +1,15 @@
+# This is a Toml config
+[GVH5075_4416]
+room='Chambre'
+
+[GVH5075_A1B2]
+room='Salon'
+
+[GVH5075_9448]
+room='SDB'
+
+[GVH5075_159E]
+room='Music'
+
+#[GVH5075_7DCD]
+#room='Ch Julie'
